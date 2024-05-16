@@ -35,26 +35,29 @@ public class Main {
 				}
 				break;
 			case 2:
-				// Añadir jugador
-				System.out.println("Dame El Nombre");
-				String nombre = abielto.next();
-				boolean existe = false;
+			    System.out.println("Dame El Nombre");
+			    String nombre = abielto.nextLine(); // Usamos nextLine para capturar el nombre completo, incluyendo espacios
+			    boolean existe = false;
 
-				for (Jugadores jugador : listaJugadores) {
-					if (jugador.getNombre().equalsIgnoreCase(nombre)) {
-						existe = true;
-						break;
-					}
-				}
+			    if (nombre.contains(" ")) { // Verificar si el nombre contiene espacios en blanco
+			        System.out.println("El nombre no puede contener espacios en blanco. Inténtalo de nuevo.");
+			    } else {
+			        for (Jugadores jugador : listaJugadores) {
+			            if (jugador.getNombre().equalsIgnoreCase(nombre)) {
+			                existe = true;
+			                break;
+			            }
+			        }
 
-				if (existe) {
-					System.out.println("Ya existe un jugador con ese nombre. Inténtalo de nuevo");
-					break;
-				} else {
-					listaJugadores.add(new Humanos(nombre));
-					System.out.println("Jugador añadido correctamente");
-				}
-				break;
+			        if (existe) {
+			            System.out.println("Ya existe un jugador con ese nombre. Inténtalo de nuevo.");
+			        } else {
+			            listaJugadores.add(new Humanos(nombre));
+			            System.out.println("Jugador añadido correctamente.");
+			        }
+			    }
+			    break;
+
 			case 3:
 				// Eliminar jugador
 				System.out.println("Dame El Nombre del Jugador a Eliminar");
