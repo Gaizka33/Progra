@@ -19,6 +19,20 @@ public abstract class Pregunta {
     }
 
     public boolean verificarRespuesta(String respuesta) {
+        if (this instanceof PreguntaIngles) {
+            switch (respuesta) {
+                case "A":
+                    return respuestaCorrecta.equalsIgnoreCase("A");
+                case "B":
+                    return respuestaCorrecta.equalsIgnoreCase("B");
+                case "C":
+                    return respuestaCorrecta.equalsIgnoreCase("C");
+                case "D":
+                    return respuestaCorrecta.equalsIgnoreCase("D");
+                default:
+                    return false;
+            }
+        }
         return respuestaCorrecta.equalsIgnoreCase(respuesta);
     }
 

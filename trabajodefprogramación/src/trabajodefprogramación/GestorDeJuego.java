@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
-
 public class GestorDeJuego {
     private List<Jugador> jugadores;
     private Ranking ranking;
@@ -34,7 +32,7 @@ public class GestorDeJuego {
             scanner.nextLine(); // Consumir la nueva línea
             switch (opcion) {
                 case 1:
-                    jugarPartida(scanner);
+                    configurarPartida(scanner);
                     break;
                 case 2:
                     ranking.mostrar();
@@ -58,6 +56,37 @@ public class GestorDeJuego {
         System.out.println("3. Histórico");
         System.out.println("4. Jugadores");
         System.out.println("5. Salir");
+    }
+
+    private void configurarPartida(Scanner scanner) {
+        jugadoresPartida.clear();
+        System.out.println("Ingrese el número de jugadores humanos (0-" + jugadores.size() + "): ");
+        int numJugadoresHumanos = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea
+
+        for (int i = 0; i < numJugadoresHumanos; i++) {
+            listarJugadores();
+            System.out.println("Seleccione el número del jugador humano " + (i + 1) + ":");
+            int indiceJugador = scanner.nextInt() - 1;
+            scanner.nextLine(); // Consumir la nueva línea
+
+            if (indiceJugador >= 0 && indiceJugador < jugadores.size()) {
+                jugadoresPartida.add(jugadores.get(indiceJugador));
+            } else {
+                System.out.println("Índice de jugador no válido. Inténtalo de nuevo.");
+                i--; // Volver a intentar agregar este jugador
+            }
+        }
+
+        System.out.println("Ingrese el número de jugadores IA: ");
+        int numIAs = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea
+
+        for (int i = 0; i < numIAs; i++) {
+            jugadoresPartida.add(new CPU());
+        }
+
+        jugarPartida(scanner);
     }
 
     private void jugarPartida(Scanner scanner) {
@@ -117,8 +146,8 @@ public class GestorDeJuego {
     }
 
     private void listarJugadores() {
-        for (Jugador jugador : jugadores) {
-            System.out.println(jugador.getNombre());
+        for (int i = 0; i < jugadores.size(); i++) {
+            System.out.println((i + 1) + ". " + jugadores.get(i).getNombre());
         }
     }
 
@@ -134,7 +163,6 @@ public class GestorDeJuego {
             } else {
                 Jugador nuevoJugador = new Jugador(nombreJugador);
                 jugadores.add(nuevoJugador);
-                jugadoresPartida.add(nuevoJugador);
                 System.out.println("Jugador añadido.");
             }
         }

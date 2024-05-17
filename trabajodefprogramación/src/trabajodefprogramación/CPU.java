@@ -1,5 +1,6 @@
 package trabajodefprogramación;
 
+
 public class CPU extends Jugador {
     private static int contadorCPUs;
 
