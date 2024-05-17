@@ -16,7 +16,7 @@ public class GestorDeArchivos {
                 jugadores.add(new Jugador(linea));
             }
         } catch (IOException e) {
-            System.out.println("Error al leer el archivo de jugadores.");
+      
         }
         return jugadores;
     }
@@ -27,7 +27,7 @@ public class GestorDeArchivos {
                 pw.println(jugador.getNombre());
             }
         } catch (IOException e) {
-            System.out.println("Error al guardar el archivo de jugadores.");
+        
         }
     }
 
@@ -42,7 +42,7 @@ public class GestorDeArchivos {
                 ranking.add(jugador);
             }
         } catch (IOException e) {
-            System.out.println("Error al leer el archivo de ranking.");
+          
         }
         return ranking;
     }
@@ -53,7 +53,7 @@ public class GestorDeArchivos {
                 pw.println(jugador.getNombre() + " " + jugador.getPuntos());
             }
         } catch (IOException e) {
-            System.out.println("Error al guardar el archivo de ranking.");
+        
         }
     }
 
@@ -65,7 +65,7 @@ public class GestorDeArchivos {
                 historico.add(linea);
             }
         } catch (IOException e) {
-            System.out.println("Error al leer el archivo de histórico.");
+           
         }
         return historico;
     }
@@ -76,7 +76,7 @@ public class GestorDeArchivos {
                 pw.println(entrada);
             }
         } catch (IOException e) {
-            System.out.println("Error al guardar el archivo de histórico.");
+         
         }
     }
 }
