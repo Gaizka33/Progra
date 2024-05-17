@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Juego {
     private List<Jugador> jugadores;
@@ -64,6 +63,5 @@ public class Juego {
         for (Jugador jugador : jugadores) {
             System.out.println(jugador.getNombre() + ": " + jugador.getPuntos() + " puntos");
         }
-        // Registrar resultados en el histórico
     }
 }

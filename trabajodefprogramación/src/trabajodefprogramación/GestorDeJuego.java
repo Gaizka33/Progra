@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+
 public class GestorDeJuego {
     private List<Jugador> jugadores;
     private Ranking ranking;
     private Historico historico;
+    private List<Jugador> jugadoresPartida;
 
     public GestorDeJuego() {
         this.jugadores = GestorDeArchivos.cargarJugadores();
         this.ranking = new Ranking();
+        this.historico = new Historico();
+        this.jugadoresPartida = new ArrayList<>();
+
         for (Jugador jugador : GestorDeArchivos.cargarRanking()) {
             ranking.agregarPuntuacion(jugador);
         }
-        this.historico = new Historico();
         for (String partida : GestorDeArchivos.cargarHistorico()) {
             historico.agregarPartida(partida);
         }
@@ -26,7 +31,7 @@ public class GestorDeJuego {
         while (true) {
             mostrarMenuPrincipal();
             int opcion = scanner.nextInt();
-            scanner.nextLine();  // Consumir la nueva línea
+            scanner.nextLine(); // Consumir la nueva línea
             switch (opcion) {
                 case 1:
                     jugarPartida(scanner);
@@ -41,9 +46,7 @@ public class GestorDeJuego {
                     gestionarJugadores(scanner);
                     break;
                 case 5:
-                    GestorDeArchivos.guardarJugadores(jugadores);
-                    GestorDeArchivos.guardarRanking(ranking.getRanking());
-                    GestorDeArchivos.guardarHistorico(historico.getHistorico());
+                    guardarDatos();
                     System.exit(0);
             }
         }
@@ -58,20 +61,14 @@ public class GestorDeJuego {
     }
 
     private void jugarPartida(Scanner scanner) {
-        System.out.println("Ingrese el número de jugadores (1-6): ");
-        int numJugadores = scanner.nextInt();
-        scanner.nextLine();  // Consumir la nueva línea
-
-        List<Jugador> jugadoresPartida = new ArrayList<>();
-        for (int i = 0; i < numJugadores; i++) {
-            System.out.println("Ingrese el nombre del jugador " + (i + 1) + " (use 'AI1', 'AI2', etc. para CPU): ");
-            String nombreJugador = scanner.nextLine();
-            jugadoresPartida.add(new Jugador(nombreJugador));
+        if (jugadoresPartida.isEmpty()) {
+            System.out.println("No hay jugadores seleccionados para la partida. Añada jugadores primero.");
+            return;
         }
 
         System.out.println("Ingrese el número de rondas (3, 5, 10, 20): ");
         int rondas = scanner.nextInt();
-        scanner.nextLine();  // Consumir la nueva línea
+        scanner.nextLine(); // Consumir la nueva línea
 
         Juego juego = new Juego(jugadoresPartida, rondas);
         juego.iniciar();
@@ -91,7 +88,7 @@ public class GestorDeJuego {
         while (true) {
             mostrarMenuJugadores();
             int opcion = scanner.nextInt();
-            scanner.nextLine();  // Consumir la nueva línea
+            scanner.nextLine(); // Consumir la nueva línea
             switch (opcion) {
                 case 1:
                     listarJugadores();
@@ -103,6 +100,9 @@ public class GestorDeJuego {
                     eliminarJugador(scanner);
                     break;
                 case 4:
+                    listarJugadoresPartida();
+                    break;
+                case 5:
                     return;
             }
         }
@@ -112,7 +112,8 @@ public class GestorDeJuego {
         System.out.println("1. Ver jugadores");
         System.out.println("2. Añadir jugador");
         System.out.println("3. Eliminar jugador");
-        System.out.println("4. Volver");
+        System.out.println("4. Ver jugadores en la partida");
+        System.out.println("5. Volver");
     }
 
     private void listarJugadores() {
@@ -124,20 +125,38 @@ public class GestorDeJuego {
     private void agregarJugador(Scanner scanner) {
         System.out.println("Ingrese el nombre del nuevo jugador: ");
         String nombreJugador = scanner.nextLine();
-        for (Jugador jugador : jugadores) {
-            if (jugador.getNombre().equals(nombreJugador)) {
+        if (nombreJugador.contains(" ")) {
+            System.out.println("No se permiten espacios en el nombre.");
+        } else {
+            boolean existe = jugadores.stream().anyMatch(j -> j.getNombre().equals(nombreJugador));
+            if (existe) {
                 System.out.println("El jugador ya existe.");
-                return;
+            } else {
+                Jugador nuevoJugador = new Jugador(nombreJugador);
+                jugadores.add(nuevoJugador);
+                jugadoresPartida.add(nuevoJugador);
+                System.out.println("Jugador añadido.");
             }
         }
-        jugadores.add(new Jugador(nombreJugador));
-        System.out.println("Jugador añadido.");
     }
 
     private void eliminarJugador(Scanner scanner) {
         System.out.println("Ingrese el nombre del jugador a eliminar: ");
         String nombreJugador = scanner.nextLine();
         jugadores.removeIf(jugador -> jugador.getNombre().equals(nombreJugador));
+        jugadoresPartida.removeIf(jugador -> jugador.getNombre().equals(nombreJugador));
         System.out.println("Jugador eliminado.");
+    }
+
+    private void listarJugadoresPartida() {
+        for (Jugador jugador : jugadoresPartida) {
+            System.out.println(jugador.getNombre());
+        }
+    }
+
+    private void guardarDatos() {
+        GestorDeArchivos.guardarJugadores(jugadores);
+        GestorDeArchivos.guardarRanking(ranking.getRanking());
+        GestorDeArchivos.guardarHistorico(historico.getHistorico());
     }
 }

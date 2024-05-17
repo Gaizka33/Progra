@@ -13,17 +13,13 @@ public class Ranking {
     }
 
     public void agregarPuntuacion(Jugador jugador) {
-        boolean encontrado = false;
         for (Jugador j : ranking) {
             if (j.getNombre().equals(jugador.getNombre())) {
-                j.sumarPunto();
-                encontrado = true;
-                break;
+                j.sumarPuntos(jugador.getPuntos());
+                return;
             }
         }
-        if (!encontrado) {
-            ranking.add(jugador);
-        }
+        ranking.add(jugador);
     }
 
     public void mostrar() {
@@ -37,3 +33,5 @@ public class Ranking {
         return ranking;
     }
 }
+
+

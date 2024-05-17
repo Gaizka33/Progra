@@ -2,6 +2,7 @@ package trabajodefprogramación;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GestorDeArchivos {
     private static final String ARCHIVO_JUGADORES = "jugadores.txt";
@@ -38,9 +39,7 @@ public class GestorDeArchivos {
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(" ");
                 Jugador jugador = new Jugador(partes[0]);
-                for (int i = 0; i < Integer.parseInt(partes[1]); i++) {
-                    jugador.sumarPunto();
-                }
+                jugador.sumarPuntos(Integer.parseInt(partes[1]));
                 ranking.add(jugador);
             }
         } catch (IOException e) {

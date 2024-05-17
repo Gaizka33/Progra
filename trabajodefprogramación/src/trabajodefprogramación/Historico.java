@@ -24,3 +24,5 @@ public class Historico {
         return historico;
     }
 }
+
+
